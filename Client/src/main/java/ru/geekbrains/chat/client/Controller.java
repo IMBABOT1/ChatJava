@@ -31,6 +31,11 @@ public class Controller implements Initializable {
                     while (true) {
                         String msg = network.readMsg();
                         textArea.appendText(msg + "\n");
+
+                        if (msg.equals("/end_confirm")){
+                            network.close();
+                        }
+
                     }
                 } catch (IOException e) {
                     Platform.runLater(() -> {
