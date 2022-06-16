@@ -1,5 +1,4 @@
 package ru.geekbrains.chat.server;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -35,8 +34,8 @@ public class ClientHandler {
                                 continue;
                             }
                             nickname = nickFromAuthManager;
-                            server.subscribe(this);
                             sendMsg("/authok " + nickname);
+                            server.subscribe(this);
                             break;
                         } else {
                             sendMsg("Указан неверный логин/пароль");
@@ -47,12 +46,23 @@ public class ClientHandler {
                     String msg = in.readUTF();
                     System.out.print("Сообщение от клиента: " + msg + "\n");
                     if (msg.startsWith("/")) {
+                        if (msg.startsWith("/w ")) {
+                            String[] tokens = msg.split(" ", 3); // /w user2 hello, user2
+                            server.sendPrivateMsg(this, tokens[1], tokens[2]);
+                            continue;
+                        }
                         if (msg.equals("/end")) {
                             sendMsg("/end_confirm");
                             break;
                         }
+
+                        if (msg.startsWith("/change_nick ")){
+                            String[] tokens = msg.split(" ");
+                            nickname = tokens[1];
+                            sendMsg("/new_nick " + nickname);
+                        }
                     } else {
-                        server.broadcastMsg(nickname + ": " + msg);
+                        server.broadcastMsg(nickname + ": " + msg, true);
                     }
                 }
             } catch (IOException e) {

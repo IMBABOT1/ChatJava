@@ -1,5 +1,4 @@
 package ru.geekbrains.chat.server;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,4 +34,3 @@ public class BasicAuthManager implements AuthManager {
         return null;
     }
 }
-
