@@ -38,4 +38,9 @@ public class BasicAuthManager implements AuthManager {
     public void connect() {
 
     }
+
+    @Override
+    public void changeNick(String oldNick, String newNick) {
+
+    }
 }

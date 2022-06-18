@@ -65,8 +65,11 @@ public class ClientHandler {
 
                         if (msg.startsWith("/change_nick ")){
                             String[] tokens = msg.split(" ");
+                            String old = nickname;
+                            String newNick = "";
                             newNick = tokens[1];
-                            server.changeNick(nickname, newNick);
+                          //  server.changeNick(old, newNick);
+                            server.getAuthManager().changeNick(nickname, newNick);
 
                         }
                     } else {
