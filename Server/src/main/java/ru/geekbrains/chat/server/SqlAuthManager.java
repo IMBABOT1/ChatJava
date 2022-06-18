@@ -2,6 +2,7 @@ package ru.geekbrains.chat.server;
 
 import com.sun.org.apache.xerces.internal.impl.dv.xs.BaseDVFactory;
 
+import java.io.OutputStream;
 import java.sql.*;
 
 public class SqlAuthManager implements AuthManager {

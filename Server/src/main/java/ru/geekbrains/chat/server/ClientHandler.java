@@ -1,8 +1,9 @@
 package ru.geekbrains.chat.server;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 public class ClientHandler {
     private Server server;
@@ -21,12 +22,16 @@ public class ClientHandler {
         this.nickname = name;
     }
 
+    private File file;
+    private PrintWriter writer;
+
 
     public ClientHandler(Server server, Socket socket) throws IOException {
         this.server = server;
         this.socket = socket;
         this.in = new DataInputStream(socket.getInputStream());
         this.out = new DataOutputStream(socket.getOutputStream());
+
         new Thread(() -> {
             try {
                 while (true) { // цикл аутентификации
@@ -43,6 +48,10 @@ public class ClientHandler {
                             nickname = nickFromAuthManager;
                             sendMsg("/authok " + nickname);
                             server.subscribe(this);
+                            file = new File(nickname + ".txt");
+                            if (!file.exists()) {
+                                file.createNewFile();
+                            }
                             break;
                         } else {
                             sendMsg("Указан неверный логин/пароль");
@@ -71,12 +80,17 @@ public class ClientHandler {
                         }
                     } else {
                         server.broadcastMsg(nickname + ": " + msg, true);
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(msg + "\n");
+                        Files.write(Paths.get(file.getPath()), sb.toString().getBytes(), StandardOpenOption.APPEND);
                     }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
+
                 close();
+
             }
         }).start();
     }
