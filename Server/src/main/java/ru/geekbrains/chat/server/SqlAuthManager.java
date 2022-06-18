@@ -12,7 +12,7 @@ public class SqlAuthManager implements AuthManager {
 
 
     @Override
-    public void connect() {
+    public void start() {
         try {
             Class.forName("org.sqlite.JDBC");
             connection = DriverManager.getConnection("jdbc:sqlite:mainDB.db");
@@ -55,8 +55,8 @@ public class SqlAuthManager implements AuthManager {
 
 
 
-
-    public  void disconnect() {
+    @Override
+    public void stop() {
         try {
             if (connection != null){
                 connection.close();;

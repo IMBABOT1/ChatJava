@@ -22,7 +22,7 @@ public class Server {
     public Server(int port) {
         clients = new ArrayList<>();
         authManager = new SqlAuthManager();
-        authManager.connect();
+        authManager.start();
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Сервер запущен. Ожидаем подключения клиентов...");
             while (true) {
@@ -32,6 +32,8 @@ public class Server {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            authManager.stop();
         }
     }
 

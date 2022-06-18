@@ -35,12 +35,17 @@ public class BasicAuthManager implements AuthManager {
     }
 
     @Override
-    public void connect() {
+    public void stop() {
 
     }
 
     @Override
     public void changeNick(String oldNick, String newNick) {
+
+    }
+
+    @Override
+    public void start() {
 
     }
 }
