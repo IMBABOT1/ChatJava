@@ -21,7 +21,8 @@ public class Server {
 
     public Server(int port) {
         clients = new ArrayList<>();
-        authManager = new BasicAuthManager();
+        authManager = new SqlAuthManager();
+        authManager.connect();
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Сервер запущен. Ожидаем подключения клиентов...");
             while (true) {
@@ -49,6 +50,22 @@ public class Server {
             stringBuilder.append(o.getNickname()).append(" ");
         }
         stringBuilder.setLength(stringBuilder.length() - 1);
+        String out = stringBuilder.toString();
+        broadcastMsg(out, false);
+    }
+
+    public void changeNick(String old, String newNick){
+        for (ClientHandler o : clients){
+            if (o.getNickname().equals(old)){
+                o.setNickname(newNick);
+            }
+        }
+        StringBuilder stringBuilder = new StringBuilder("/change_list ");
+        for (ClientHandler o : clients) {
+            stringBuilder.append(o.getNickname()).append(" ");
+        }
+        stringBuilder.setLength(stringBuilder.length() - 1);
+
         String out = stringBuilder.toString();
         broadcastMsg(out, false);
     }

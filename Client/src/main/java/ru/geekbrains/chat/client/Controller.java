@@ -90,16 +90,15 @@ public class Controller implements Initializable {
                                         }
                                     }
                                 });
-                            }
-                            if (msg.startsWith("/new_nick ")) {
-                                Platform.runLater(() -> {
-                                    String[] tokens = msg.split(" ");
-                                    for (int i = 0; i < clientsList.getItems().size() ; i++) {
-                                        if (clientsList.getItems().get(i).equals(nickname)){
-                                            clientsList.getItems().add(i, tokens[1]);
+                                if (msg.startsWith("/change_list ")){
+                                    Platform.runLater(() ->{
+                                       clientsList.getItems().clear();
+                                       String[] tokens = msg.split(" ");
+                                        for (int i = 1; i <tokens.length ; i++) {
+                                            clientsList.getItems().add(tokens[i]);
                                         }
-                                    }
-                                });
+                                    });
+                                }
                         }
 
                         } else {

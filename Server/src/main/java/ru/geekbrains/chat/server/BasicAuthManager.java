@@ -33,4 +33,9 @@ public class BasicAuthManager implements AuthManager {
         }
         return null;
     }
+
+    @Override
+    public void connect() {
+
+    }
 }

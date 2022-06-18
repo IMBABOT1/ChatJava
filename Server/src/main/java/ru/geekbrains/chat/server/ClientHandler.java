@@ -11,9 +11,16 @@ public class ClientHandler {
     private DataOutputStream out;
     private String nickname;
 
+    private String newNick;
+
     public String getNickname() {
         return nickname;
     }
+
+    public void setNickname(String name){
+        this.nickname = name;
+    }
+
 
     public ClientHandler(Server server, Socket socket) throws IOException {
         this.server = server;
@@ -58,8 +65,9 @@ public class ClientHandler {
 
                         if (msg.startsWith("/change_nick ")){
                             String[] tokens = msg.split(" ");
-                            nickname = tokens[1];
-                            sendMsg("/new_nick " + nickname);
+                            newNick = tokens[1];
+                            server.changeNick(nickname, newNick);
+
                         }
                     } else {
                         server.broadcastMsg(nickname + ": " + msg, true);
